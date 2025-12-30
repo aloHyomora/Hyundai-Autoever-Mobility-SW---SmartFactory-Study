@@ -161,3 +161,17 @@ for c in labels:
     else:
         print("정상 Label 데이터 수: ", len(c_x_train))
         get_scatter_plot(c)
+
+# ==============================
+# Data Visualization
+# 데이터 시각화 3: 1개의 임의의 센서 값을 시계열을 플롯
+# ==============================
+
+sensor_number = random.randint(0, 500)  # 0~499 사이에서 랜덤한 센서 번호 선택
+plt.figure(figsize=(13, 4))   # Plot 틀(Figure)의 Size 설정(13x4)
+plt.title("Sensor number: {}".format(sensor_number), fontsize=20)
+plt.plot(x_train[:, sensor_number])
+plt.xlabel("Time", fontsize=15)
+plt.ylabel("Sensor Value", fontsize=15)
+plt.savefig(img_save_path + 'ford_data_ts_sensor{}.png'.format(sensor_number), dpi=100, bbox_inches='tight')  # Plot 이미지 저장
+plt.show()  # Plot 화면에 출력
