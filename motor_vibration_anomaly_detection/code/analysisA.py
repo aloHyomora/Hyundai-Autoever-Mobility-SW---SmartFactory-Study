@@ -23,6 +23,21 @@ print(torch.__version__)
 # Data import
 # 데이터 불러오기
 # ==============================
-file_path = '/dataset/'   # Dataset directory (데이터셋 경로)
+file_path = './dataset/'   # Dataset directory (데이터셋 경로)
 train_fn = 'FordA_TRAIN.arff'  # Training data file (학습 데이터 파일)
 test_fn = 'FordA_TEST.arff'    # Test data file (테스트 데이터 파일)
+
+def read_arff(file_path):
+    raw_data, meta = loadarff(file_path)
+    cols = [x for x in meta]
+    data2d = np.zeros([raw_data.shape[0], len(cols)])
+
+    for i, col in zip(range(len(cols)), cols):
+        data2d[:, i] = raw_data[col]
+    return data2d
+
+train = read_arff(file_path + train_fn)
+test = read_arff(file_path + test_fn)
+    
+print("Train data shape:", train.shape)
+print("Test data shape:", test.shape)
