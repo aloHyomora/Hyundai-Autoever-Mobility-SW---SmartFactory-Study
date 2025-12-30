@@ -136,3 +136,28 @@ plt.xlabel("Sensor", fontsize=15)
 plt.ylabel("Sensor Value", fontsize=15)
 plt.savefig(img_save_path + 'ford_data_ts_sample1.png', dpi=100, bbox_inches='tight')  # Plot 이미지 저장
 plt.show()  # Plot 화면에 출력
+
+# ==============================
+# Data Visualization
+# 데이터 시각화 2-2: 특정 시간에서의 시계열 샘플을 플롯
+# ==============================
+
+def get_scatter_plot(c):
+    time_t = random.randint(0, c_x_train.shape[0]) # 0~샘플 개수 사이에서 랜덤한 인덱스 선택
+    plt.scatter(range(0, c_x_train.shape[1]), c_x_train[time_t], marker='o', s=5, c="r" if c == -1 else "b")  # 클래스 c의 랜덤 샘플 플롯
+    plt.title("at time: t_{}".format(time_t), fontsize=20)
+    plt.xlabel("Sensor", fontsize=14)
+    plt.ylabel("Sensor Value", fontsize=14)
+    plt.savefig(img_save_path + '{state}.png'.format(state="abnormal" if c == -1 else "normal"), dpi=100, bbox_inches='tight')  # Plot 이미지 저장
+    plt.show()  # Plot 화면에 출력
+
+labels = np.unique(np.concatenate((y_train,y_valid,y_test), axis=0))    # 클래스 종류 확인: 정상(1), 비정상(-1)
+
+for c in labels:
+    c_x_train = x_train[y_train == c]   # 클래스 c에 해당하는 x_train 샘플들
+    if c == -1:
+        print("비정상 Label 데이터 수: ", len(c_x_train))
+        get_scatter_plot(c)
+    else:
+        print("정상 Label 데이터 수: ", len(c_x_train))
+        get_scatter_plot(c)
