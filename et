@@ -1,0 +1,35 @@
+[33mcommit 5e82036c2ef8412fa341102573289594d07595e1[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m
+Author: aloHyomora <alohomoratolit@naver.com>
+Date:   Tue Dec 30 09:19:29 2025 +0900
+
+    add: anomaly dectection folder, Ford dataset
+
+[33mcommit 7a7fe1795845e2655bb45549c5ac926b16d81a9a[m
+Author: aloHyomora <alohomoratolit@naver.com>
+Date:   Tue Dec 30 09:19:25 2025 +0900
+
+    add: test data analysis
+
+[33mcommit 1bcdf67ea7e4b8f11de3a3eab69ee296af8a7344[m
+Author: aloHyomora <alohomoratolit@naver.com>
+Date:   Sat Dec 20 22:55:57 2025 +0900
+
+    chore: move plots folder
+
+[33mcommit 68f7f6f18f6f9cdc914853107d9d34feffbf4878[m
+Author: aloHyomora <alohomoratolit@naver.com>
+Date:   Sat Dec 20 22:46:14 2025 +0900
+
+    feat: draw scatter(pH, Temp, PR)
+
+[33mcommit 4013e346bb3b09b42ab2aa3c3467349903e67bb0[m
+Author: aloHyomora <alohomoratolit@naver.com>
+Date:   Sat Dec 20 21:06:41 2025 +0900
+
+    edit: folder architecture
+
+[33mcommit 2d28f7a1f0d528fc919a9805838ca93bf426ab92[m
+Author: aloHyomora <alohomoratolit@naver.com>
+Date:   Sat Dec 20 21:00:08 2025 +0900
+
+    initial commit: add data251219.xlsx

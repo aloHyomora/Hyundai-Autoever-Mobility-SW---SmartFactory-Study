@@ -29,9 +29,9 @@ test_fn = 'FordA_TEST.arff'    # Test data file (테스트 데이터 파일)
 def read_arff(file_path):
     raw_data, meta = loadarff(file_path)
     cols = [x for x in meta]
-    data2d = np.zeros([raw_data.shape[0], len(cols)])
+    data2d = np.zeros([raw_data.shape[0], len(cols)])   # 빈 2D 배열 생성(raw_data 행 수 x meta 길이의 열 수)
 
-    for i, col in zip(range(len(cols)), cols):
+    for i, col in zip(range(len(cols)), cols):  # 열 인덱스 i와 열 이름 col을 함께 반복
         data2d[:,i] = raw_data[col]
     return data2d
 
@@ -73,3 +73,44 @@ print("x_valid shape:", x_valid.shape)
 print("y_valid shape:", y_valid.shape)
 print("x_test shape:", x_test.shape)
 print("y_test shape:", y_test.shape)
+
+# ==============================
+# Data Visualization
+# 데이터 시각화 1: 데이터 불균형(Data Imbalance) 확인
+# ==============================
+
+# 클래스 종류 확인: 정상(1), 비정상(-1)
+classes = np.unique(np.concatenate((y_train, y_valid, y_test), axis=0))
+
+x = np.arange(len(classes))  # Plot의 x축 개수 구하기
+labels = ['Normal', 'Abnormal'] # Plot의 x축 이름 지정
+
+values_train = [(y_train == i).sum() for i in classes]  # Train 데이터의 정상/비정상 개수 세기
+values_valid = [(y_valid == i).sum() for i in classes]  # Validation 데이터의 정상/비정상 개수 세기
+values_test = [(y_test == i).sum() for i in classes]    # Test 데이터의 정상/비정상 개수 세기
+
+plt.figure(figsize=(8, 4))   # Plot 틀(Figure)의 Size 설정(8x4)
+
+plt.subplot(1, 3, 1)   # Plot 틀(Figure) 내 3개의 subplot 중 첫 번째(왼쪽) 지정
+plt.title("Training Data")  # Subplot 제목
+plt.bar(x, values_train,  width=0.6, color=["red", "blue"])  # Train 데이터 정상/비정상 막대 그래프
+plt.ylim([0,1500])
+plt.xticks(x, labels)  # x축 눈금 이름 지정
+
+plt.subplot(1, 3, 2)   # Plot 틀(Figure) 내 3개의 subplot 중 두 번째(가운데) 지정
+plt.title("Validation Data")  # Subplot 제목
+plt.bar(x, values_valid,  width=0.6, color=["red", "blue"])  # Validation 데이터 정상/비정상 막대 그래프
+plt.ylim([0,1500])
+plt.xticks(x, labels)  # x축 눈금 이름 지정
+
+plt.subplot(1, 3, 3)   # Plot 틀(Figure) 내 3개의 subplot 중 세 번째(오른쪽) 지정
+plt.title("Test Data")  # Subplot 제목
+plt.bar(x, values_test,  width=0.6, color=["red", "blue"])  # Test 데이터 정상/비정상 막대 그래프
+plt.ylim([0,1500])
+plt.xticks(x, labels)  # x축 눈금 이름 지정
+
+plt.tight_layout()  # Subplot 간 간격 자동 조정
+img_save_path = './output/image/'
+plt.savefig(img_save_path + 'data_distribution.png', dpi=100, bbox_inches='tight')  # Plot 이미지 저장
+plt.show()  # Plot 화면에 출력
+
