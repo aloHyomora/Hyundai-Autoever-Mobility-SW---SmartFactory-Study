@@ -175,3 +175,53 @@ plt.xlabel("Time", fontsize=15)
 plt.ylabel("Sensor Value", fontsize=15)
 plt.savefig(img_save_path + 'ford_data_ts_sensor{}.png'.format(sensor_number), dpi=100, bbox_inches='tight')  # Plot 이미지 저장
 plt.show()  # Plot 화면에 출력
+
+# ==============================
+# 데이터 상관관계 분석
+# Data Correlation Analysis
+# ==============================
+
+import matplotlib.cm as cm  # Colormap handling (컬러맵 처리)
+from matplotlib.collections import EllipseCollection  # Ellipse collection for correlation plot (상관관계 플롯용 타원 컬렉션)
+
+
+df = pd.DataFrame(data=x_train, columns=["sensor_{}".format(label + 1) for label in range(x_train.shape[1])])  # DataFrame 생성, 열 이름 지정
+data = df.corr() # 상관관계 행렬 계산(원리: 피어슨 상관계수)
+
+def plot_corr_ellipes(data, ax=None, **kwargs):
+    M = np.array(data)
+    if not M.ndim == 2: # 2차원 배열인지 확인
+        raise ValueError("Data must be 2-dimensional")
+    if ax is None:      # ax가 주어지지 않으면 새로 생성
+        fig, ax = plt.subplots(1, 1, subplot_kw={'aspect': 'equal'})   # 동일한 비율의 축 설정
+        ax.set_xlim(-0.5, M.shape[1] - 0.5) # x축 한계 설정
+        ax.set_ylim(-0.5, M.shape[0] - 0.5) # y축 한계 설정
+
+    xy = np.indices(M.shape)[::-1].reshape(2, -1).T  # 좌표 생성 및 재구성
+
+    w = np.ones_like(M).ravel() # 타원 너비 설정
+    h = 1 - np.abs(M).ravel()  # 타원 높이 설정
+    a = 45 * np.sign(M).ravel() # 타원 각도 설정
+
+    ec = EllipseCollection(widths=w, heights=h, angles=a, units='x',
+                           offsets=xy, transOffset=ax.transData,array=M.ravel(), **kwargs)  # 타원 컬렉션 생성
+    ax.add_collection(ec)   # 타원 컬렉션 추가
+
+    if isinstance(data, pd.DataFrame):  # DataFrame인 경우 축 눈금 설정
+        ax.set_xticks(np.arange(M.shape[1]))
+        ax.set_xticklabels(data.columns, rotation=90)
+        ax.set_yticks(np.arange(M.shape[0]))
+        ax.set_yticklabels(data.index)
+    return ec
+
+fig, ax = plt.subplots(1, 1, figsize=(20, 20))  # Plot 틀(Figure) 및 축(Axis) 생성
+cmap = cm.get_cmap('jet', 31)  # Colormap 설정
+m = plot_corr_ellipes(data, ax=ax, cmap=cmap)  # 상관관계 타원 플롯 생성
+cb = fig.colorbar(m)  # Colorbar 추가
+cb.set_label('Correlation coefficient')
+plt.title('Correlation between Feature')
+ax.axes.xaxis.set_visible(False)
+ax.axes.yaxis.set_visible(False)
+plt.tight_layout()
+plt.savefig(img_save_path + 'corr.png', dpi=100, bbox_inches='tight')  # Plot 이미지 저장
+plt.show()  # Plot 화면에 출력
