@@ -225,3 +225,43 @@ ax.axes.yaxis.set_visible(False)
 plt.tight_layout()
 plt.savefig(img_save_path + 'corr.png', dpi=100, bbox_inches='tight')  # Plot 이미지 저장
 plt.show()  # Plot 화면에 출력
+
+# ==============================
+# 데이터 정규화
+# Data Normalization
+# ==============================
+
+from sklearn.preprocessing import StandardScaler, RobustScaler
+
+# Standard Scaler를 적용하고 싶은 경우 아래 Code를 실행
+stder = StandardScaler()
+stder.fit(x_train)   # 학습 데이터로 Scaler 학습
+x_train = stder.transform(x_train)   # 학습 데이터에 Scaler 적용
+x_valid = stder.transform(x_valid)   # 검증 데이터에 Scaler 적용
+
+# Robust Scaler를 적용하고 싶은 경우 아래 Code를 실행
+# rscaler = RobustScaler()
+# rscaler.fit(x_train)   # 학습 데이터로 Scaler 학습
+# x_train = rscaler.transform(x_train)   # 학습 데이터에 Scaler 적용
+# x_valid = rscaler.transform(x_valid)   # 검증 데이터에 Scaler 적용
+
+# CNN, RNN 모델의 입력 변수는 채널 축 1개 차원을 확장시킨 3D Tensor이다.
+# 축 아래 CNN, RNN 모델은 x_train, x_valid, x_test를 입력 변수로 넣지 않고,
+# x_train_exp, x_valid_exp, x_test_exp를 입력 변수로 넣는다.
+x_train_exp = np.expand_dims(x_train, -1)   # 채널 축
+x_valid_exp = np.expand_dims(x_valid, -1)   # 채널 축
+x_test_exp = np.expand_dims(x_test, -1)     # 채널 축
+
+print("\nData shapes after normalization and dimension expansion:")
+print("x_train_exp shape:", x_train_exp.shape)
+print("x_valid_exp shape:", x_valid_exp.shape)
+print("x_test_exp shape:", x_test_exp.shape)
+
+# ==============================
+# 종속 변수(y)를 양의 값으로 변경
+# Change dependent variable (y) to positive values
+# ==============================
+
+y_train[y_train == -1] = 0   # y_train의 -1 값을 0으로 변경
+y_valid[y_valid == -1] = 0   # y_valid의 -1 값을 0으로 변경
+y_test[y_test == -1] = 0     # y_test의 -1 값을 0으로 변경
