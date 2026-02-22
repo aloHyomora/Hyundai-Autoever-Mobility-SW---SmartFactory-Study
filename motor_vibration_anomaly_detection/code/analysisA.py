@@ -265,3 +265,4 @@ print("x_test_exp shape:", x_test_exp.shape)
 y_train[y_train == -1] = 0   # y_train의 -1 값을 0으로 변경
 y_valid[y_valid == -1] = 0   # y_valid의 -1 값을 0으로 변경
 y_test[y_test == -1] = 0     # y_test의 -1 값을 0으로 변경
+
